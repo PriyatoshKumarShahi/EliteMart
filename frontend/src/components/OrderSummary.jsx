@@ -14,10 +14,8 @@ const OrderSummary = () => {
 
 	const savings = subtotal - total;
 	const formattedSubtotal = subtotal.toFixed(2);
-
-	const finalDiscount=5*formattedSubtotal/100;
-	const finalAmount = formattedSubtotal - finalDiscount;
-	finalAmount.toFixed(2);
+	const formattedTotal = total.toFixed(2);
+	const formattedSavings = savings.toFixed(2);
 
 	const handlePayment = async () => {
 		const stripe = await stripePromise;
@@ -49,25 +47,25 @@ const OrderSummary = () => {
 				<div className='space-y-2'>
 					<dl className='flex items-center justify-between gap-4'>
 						<dt className='text-base font-normal text-gray-300'>Original price</dt>
-						<dd className='text-base font-medium text-white'>₹{formattedSubtotal}</dd>
+						<dd className='text-base font-medium text-white'>${formattedSubtotal}</dd>
 					</dl>
-					<dl className='flex items-center justify-between gap-4'>
-						<dt className='text-base font-normal text-gray-300'>Discount</dt>
-						<dd className='text-base font-medium text-green-500'>5%</dd>
-					</dl>
-
 
 					{savings > 0 && (
 						<dl className='flex items-center justify-between gap-4'>
 							<dt className='text-base font-normal text-gray-300'>Savings</dt>
-							<dd className='text-base font-medium text-emerald-400'>-₹{finalDiscount}</dd>
+							<dd className='text-base font-medium text-emerald-400'>-${formattedSavings}</dd>
 						</dl>
 					)}
 
-				
+					{coupon && isCouponApplied && (
+						<dl className='flex items-center justify-between gap-4'>
+							<dt className='text-base font-normal text-gray-300'>Coupon ({coupon.code})</dt>
+							<dd className='text-base font-medium text-emerald-400'>-{coupon.discountPercentage}%</dd>
+						</dl>
+					)}
 					<dl className='flex items-center justify-between gap-4 border-t border-gray-600 pt-2'>
 						<dt className='text-base font-bold text-white'>Total</dt>
-						<dd className='text-base font-bold text-emerald-400'>₹{finalAmount}</dd>
+						<dd className='text-base font-bold text-emerald-400'>${formattedTotal}</dd>
 					</dl>
 				</div>
 
