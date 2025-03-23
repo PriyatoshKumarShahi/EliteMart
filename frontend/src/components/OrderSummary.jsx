@@ -6,7 +6,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import axios from "../lib/axios";
 
 const stripePromise = loadStripe(
-	"pk_test_51KZYccCoOZF2UhtOwdXQl3vcizup20zqKqT9hVUIsVzsdBrhqbUI2fE0ZdEVLdZfeHjeyFXtqaNsyCJCmZWnjNZa00PzMAjlcL"
+	"pk_test_51R5QCn06wtxTmcDcDEVh8xqxV6ZVNbonH4MLlVUfoqkvJsbJMRyKe3navOUWVtTG7AhU6i9iunGg7QPhRDqGcobP003PuDbDWD"
 );
 
 const OrderSummary = () => {
@@ -14,8 +14,10 @@ const OrderSummary = () => {
 
 	const savings = subtotal - total;
 	const formattedSubtotal = subtotal.toFixed(2);
-	const formattedTotal = total.toFixed(2);
-	const formattedSavings = savings.toFixed(2);
+
+	const finalDiscount=5*formattedSubtotal/100;
+	const finalAmount = formattedSubtotal - finalDiscount;
+	finalAmount.toFixed(2);
 
 	const handlePayment = async () => {
 		const stripe = await stripePromise;
@@ -58,14 +60,14 @@ const OrderSummary = () => {
 					{savings > 0 && (
 						<dl className='flex items-center justify-between gap-4'>
 							<dt className='text-base font-normal text-gray-300'>Savings</dt>
-							<dd className='text-base font-medium text-emerald-400'>-₹{formattedSavings}</dd>
+							<dd className='text-base font-medium text-emerald-400'>-₹{finalDiscount}</dd>
 						</dl>
 					)}
 
 				
 					<dl className='flex items-center justify-between gap-4 border-t border-gray-600 pt-2'>
 						<dt className='text-base font-bold text-white'>Total</dt>
-						<dd className='text-base font-bold text-emerald-400'>₹{95*formattedTotal/100}</dd>
+						<dd className='text-base font-bold text-emerald-400'>₹{finalAmount}</dd>
 					</dl>
 				</div>
 
